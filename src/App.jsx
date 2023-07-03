@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import "./styles.css";
 
 export const App = () => {
@@ -11,6 +11,8 @@ export const App = () => {
     'うううう',
   ]);
 
+  const inputRef = useRef(null);
+
   const onChangeTodoText = (event) => {
     setTodoText(event.target.value);
   };
@@ -20,16 +22,28 @@ export const App = () => {
     const newTodos = [...incompleteTodos, todoText];
     setIncompleteTodos(newTodos);
     setTodoText('');
+    inputRef.current.focus();
   };
 
   const onClickDelete = (index) => {
-    alert(index);
+    const newTodos = [...incompleteTodos];
+    newTodos.splice(index, 1);
+    setIncompleteTodos(newTodos);
+  };
+
+  const onClickComplete = (index) => {
+    const newIncompleteTodos = [...incompleteTodos];
+    newIncompleteTodos.splice(index, 1);
+
+    const newCompleteTodos = [...completeTodos, incompleteTodos[index]];
+    setIncompleteTodos(newIncompleteTodos);
+    setCompleteTodos(newCompleteTodos);
   };
   
   return (
     <>
       <div className="input-area">
-        <input placeholder="TODOを入力" value={todoText} onChange={onChangeTodoText} />
+        <input placeholder="TODOを入力" value={todoText} onChange={onChangeTodoText} ref={inputRef} />
         <button onClick={onClickAdd}>追加</button>
       </div>
       <div className="incomplete-area">
@@ -39,7 +53,7 @@ export const App = () => {
             return (
               <div key={todo} className="list-row">
                 <li>{todo}</li>
-                <button>完了</button>
+                <button onClick={() => onClickComplete(index)}>完了</button>
                 <button onClick={() => onClickDelete(index)}>削除</button>
               </div>
             );

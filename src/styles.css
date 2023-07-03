@@ -13,12 +13,14 @@ button {
   border-radius: 16px;
   border: none;
   padding: 4px 16px;
+  margin: 0 6px;
 }
 
 button:hover {
   background-color: #ff7fff;
   color: #fff;
   cursor: pointer;
+  margin: 0 6px;
 }
 
 li {
